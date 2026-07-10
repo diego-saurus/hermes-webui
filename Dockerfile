@@ -8,7 +8,7 @@ USER root
 
 # Supervisor for running webui + gateway side by side
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends supervisor openssl && \
+    apt-get install -y --no-install-recommends supervisor openssl gosu && \
     rm -rf /var/lib/apt/lists/*
 
 # Container marker (webui checks for this)
