@@ -25,4 +25,8 @@ services:
       - HERMES_GID=1000
       # Optional: protect the web UI with a password
       - HERMES_WEBUI_PASSWORD=${HERMES_SERVICE_PASSWORD}
+      # Hermes dashboard basic auth
+      - HERMES_DASHBOARD_BASIC_AUTH_USERNAME=${HERMES_DASHBOARD_BASIC_AUTH_USERNAME:-admin}
+      - HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=${HERMES_DASHBOARD_BASIC_AUTH_PASSWORD:-changeme}
+      - HERMES_DASHBOARD_BASIC_AUTH_SECRET=${HERMES_DASHBOARD_BASIC_AUTH_SECRET}
     restart: unless-stopped
