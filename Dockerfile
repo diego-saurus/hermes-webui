@@ -47,10 +47,16 @@ USER root
 RUN . /opt/hermes/.venv/bin/activate && \
     uv pip install --no-cache-dir numpy
 
+# Cloud Commander: web-based file manager. npm + node are already in the
+# base image, so just install the global package.
+RUN npm i -g cloudcmd && \
+    mkdir -p /opt/data/.cloudcmd && \
+    chown -R hermes:hermes /opt/data/.cloudcmd
+
 ENV PATH="/opt/hermes/.venv/bin:${PATH}"
 
-# WebUI (8787) + Gateway API (8642) + Hermes Dashboard (9119)
-EXPOSE 8787 8642 9119
+# WebUI (8787) + Gateway API (8642) + Hermes Dashboard (9119) + Cloud Commander (8000)
+EXPOSE 8787 8642 9119 8000
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
