@@ -14,6 +14,16 @@ RUN apt-get update && \
 # Container marker (webui checks for this)
 RUN touch /.within_container
 
+# ── File Browser ──
+# Single static binary via the official installer. Run under supervisord so
+# it can browse the entire hermes container filesystem. Database + config
+# live in /opt/data/filebrowser so they persist across image rebuilds.
+# The default admin password is generated on first boot and printed to
+# container logs (see filebrowser.md "First Boot").
+RUN mkdir -p /opt/data/filebrowser && \
+    curl -fsSL https://raw.githubusercontent.com/filebrowser/get/master/get.sh | bash && \
+    chown -R hermes:hermes /opt/data/filebrowser
+
 # ── Configuration ──
 COPY entrypoint.sh /entrypoint.sh
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
@@ -49,8 +59,8 @@ RUN . /opt/hermes/.venv/bin/activate && \
 
 ENV PATH="/opt/hermes/.venv/bin:${PATH}"
 
-# WebUI (8787) + Gateway API (8642) + Hermes Dashboard (9119)
-EXPOSE 8787 8642 9119
+# WebUI (8787) + Gateway API (8642) + Hermes Dashboard (9119) + File Browser (8080)
+EXPOSE 8787 8642 9119 8080
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
