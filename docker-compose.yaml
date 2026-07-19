@@ -30,3 +30,22 @@ services:
       - HERMES_DASHBOARD_BASIC_AUTH_PASSWORD_HASH=${HERMES_DASHBOARD_BASIC_AUTH_PASSWORD_HASH}
       - HERMES_DASHBOARD_BASIC_AUTH_SECRET=${HERMES_DASHBOARD_BASIC_AUTH_SECRET}
     restart: unless-stopped
+
+  # ── File Browser ──
+  # Web UI for browsing the same data the hermes agent works on. Binds the
+  # same host paths hermes uses and merges them under /srv, so files created
+  # in either UI are visible to the other. The default admin password is
+  # auto-generated and printed in the container logs on first boot (see
+  # "First Boot" in filebrowser.md). PID/GID 1000 inside the container
+  # matches HERMES_UID/HERMES_GID above, so bind-mount permissions line up.
+  filebrowser:
+    image: filebrowser/filebrowser
+    container_name: hermes-filebrowser
+    volumes:
+      - /root/.hermes-data:/srv/.hermes-data
+      - /root/hermes-workspace:/srv/workspaces
+      - filebrowser_database:/database
+      - filebrowser_config:/config
+    environment:
+      - SERVICE_URL_FILEBROWSER_80
+    restart: unless-stopped
