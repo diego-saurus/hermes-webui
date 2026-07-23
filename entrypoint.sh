@@ -99,9 +99,9 @@ YAML
 fi
 
 # profile; for non-default profiles run:
-#   docker exec -it -u hermes hermes-ui hermes -p <name> config set memory.provider mem0
+#   docker exec -it -u hermes hermes-ui hermes -p <name> config set memory.provider hindsight
 gosu hermes env HERMES_HOME="$HERMES_HOME" \
-    /opt/hermes/.venv/bin/hermes config set memory.provider mem0 \
+    /opt/hermes/.venv/bin/hermes config set memory.provider hindsight \
     >/dev/null 2>&1 || echo "[entrypoint] Warning: failed to set memory.provider"
 
 # ── Camofox: enable managed_persistence ──

@@ -40,7 +40,7 @@ RUN . /opt/hermes/.venv/bin/activate && \
 USER root
 
 RUN . /opt/hermes/.venv/bin/activate && \
-    uv pip install --no-cache-dir mem0ai
+    uv pip install --no-cache-dir hindsight-client 
 
 ENV PATH="/opt/hermes/.venv/bin:${PATH}"
 
